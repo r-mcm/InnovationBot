@@ -1,0 +1,7 @@
+__pycache__/
+/dist/
+/snscrape.egg-info/
+/.eggs/
+snscrape/
+*.csv
+s.x
