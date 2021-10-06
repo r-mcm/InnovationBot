@@ -5,3 +5,4 @@ __pycache__/
 snscrape/
 *.csv
 s.x
+.env
