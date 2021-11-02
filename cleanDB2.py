@@ -13,6 +13,6 @@ cur = conn.cursor()
 
 # Execute the SQL query
 cur.execute("""
-    DROP TABLE tweetsuk
+    DROP TABLE tweetsnce
 """)
 conn.commit()

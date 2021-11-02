@@ -11,8 +11,21 @@ conn = psycopg2.connect("dbname=tweetsDB user=" + user +  " password=" + passwor
 # Open a cursor to perform database operations
 cur = conn.cursor()
 
-# Execute the SQL query
+# Create the table in SQL
 cur.execute("""
-    DROP TABLE tweetsuk
+    CREATE TABLE accounts(
+    AcccountName text PRIMARY KEY,
+    Region text,
+    Portfolio text,
+    SubPortfolio text,
+    TwitterHandle text
+)
 """)
+
+#Copy data from csv into the SQL table
+with open('SQLTablesCSV.csv', 'r', encoding='utf8') as f:
+    next(f) # Skip the header row.
+    cur.copy_from(f, 'accounts', sep=',')
+
+#Commit the transaction
 conn.commit()

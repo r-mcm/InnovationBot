@@ -5,10 +5,10 @@ import psycopg2
 from decouple import config
 
 # Creating list to append tweet data to
-tweets_list = []
+tweets_list1 = []
 
 #List of users to search
-users_list = [
+users_list1 = [
 'Aon_plc',
 'AWE_plc',
 'BAESystemsplc',
@@ -40,25 +40,26 @@ hashtags_list = [
 
 # Join the OR string to each list item
 orString = ' OR '
+orFromString = ' OR from:'
 hashtags_list_or = orString.join(hashtags_list)
-users_list_or = orString.join(users_list)
+users_list_or1 = orFromString.join(users_list1)
 
 # Using TwitterSearchScraper to scrape data and append tweets to list
-for i,tweet in enumerate(sntwitter.TwitterSearchScraper('from:' + users_list_or + '' + hashtags_list_or + ' since:2021-01-01 until:2021-12-31').get_items()):
-    if i>10:
+for i,tweet in enumerate(sntwitter.TwitterSearchScraper('from:' + users_list_or1 + ' ' + hashtags_list_or + ' since:2021-01-01 until:2021-12-31').get_items()):
+    if i>1000:
         break
-    tweets_list.append([tweet.id, tweet.date, tweet.user.username, tweet.content.replace('\n','')])
+    tweets_list1.append([tweet.id, tweet.date, tweet.user.username, tweet.content.replace('\n','')])
 
 #Taking the list of hashtags from the tweet strings
-for i, x in enumerate(tweets_list):
-    hashtags = re.findall(r"#[a-zA-Z0-9_]*", x[2])
+for i, x in enumerate(tweets_list1):
+    hashtags = re.findall(r"#[a-zA-Z0-9_]*", x[3])
     print(x[1], hashtags)
   
 # # Creating a dataframe from the tweets list above
-tweets_df = pd.DataFrame(tweets_list, columns=['TweetId', 'Datetime', 'Username', 'Text'])
+tweets_df1 = pd.DataFrame(tweets_list1, columns=['TweetId', 'Datetime', 'TwitterHandle', 'Tweetcontent'])
 
 # # Export dataframe into a CSV
-tweets_df.to_csv('tweets.csv', sep='`', index=False)
+tweets_df1.to_csv('tweetsuk.csv', sep='`', index=False)
 
 # Assign user and password for database
 user = config('user',default='')
@@ -72,18 +73,18 @@ cur = conn.cursor()
 
 # Create the table in SQL
 cur.execute("""
-    CREATE TABLE tweets(
+    CREATE TABLE tweetsuk(
     TweetId bigint PRIMARY KEY,
     Datetime text,
-    Username text,
+    TwitterHandle text,
     Tweetcontent text
 )
 """)
 
 #Copy data from csv into the SQL table
-with open('tweets.csv', 'r', encoding='utf8') as f:
+with open('tweetsuk.csv', 'r', encoding='utf8') as f:
     next(f) # Skip the header row.
-    cur.copy_from(f, 'tweets', sep='`')
+    cur.copy_from(f, 'tweetsuk', sep='`')
 
 #Commit the transaction
 conn.commit()
