@@ -16,3 +16,13 @@ cur.execute("""
     DROP TABLE tweetsuk
 """)
 conn.commit()
+
+cur.execute("""
+    DROP TABLE tweetsnce
+""")
+conn.commit()
+
+cur.execute("""
+    DROP TABLE keywords
+""")
+conn.commit()
