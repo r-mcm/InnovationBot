@@ -10,55 +10,9 @@ tweets_list2 = []
 keyword_list = []
 
 #List of users to search
-users_list1 = [
-'Aon_plc',
-'AWE_plc',
-'BAESystemsplc',
-'bp_plc',
-'DefenceHQ',
-'DefraGovUK',
-'DeutscheBank',
-'DHSCgovuk',
-'DWP',
-'FedEx',
-'Leonardo_live',
-'LloydsBank',
-'LondonLmg',
-'metpoliceuk',
-'MicroFocus',
-'MOFUAE',
-'MoJGovUK',
-'NatWestGroup',
-'networkrail',
-'RollsRoyce',
-'ukhomeoffice'
-]
-users_list2 = [
-'Airbus',
-'Allianz',
-'apoBank',
-'BASF',
-'BMW',
-'commerzbank',
-'Daimler',
-'eonenergyuk',
-'ericsson',
-'jimmychoo',
-'MLP_SE',
-'Nestle',
-'Philips',
-'Saab',
-'SAP',
-'SKFgroup',
-'skmdk',
-'Syngenta',
-'TelenorGroup',
-'thyssenkrupp_en',
-'uniper_energy',
-'VattenfallGroup',
-'VodafoneGroup',
-'VW'
-]
+users_list1 = config('users_list1',default='')
+users_list2 = config('users_list2',default='')
+
 #List of hashtags to search
 hashtags_list = [
 'Innovation',
@@ -74,13 +28,14 @@ users_list_or1 = orFromString.join(users_list1)
 users_list_or2 = orFromString.join(users_list2)
 
 # Using TwitterSearchScraper to scrape data and append tweets to list
+numberOfTweets = 100
 for i,tweet in enumerate(sntwitter.TwitterSearchScraper('from:' + users_list_or1 + ' ' + hashtags_list_or + ' since:2021-01-01 until:2021-12-31').get_items()):
-    if i>10:
+    if i>numberOfTweets:
         break
     tweets_list1.append([tweet.id, tweet.date, tweet.user.username, tweet.content.replace('\n','')])
 
 for i,tweet in enumerate(sntwitter.TwitterSearchScraper('from:' + users_list_or2 + ' ' + hashtags_list_or + ' since:2021-01-01 until:2021-12-31').get_items()):
-    if i>10:
+    if i>numberOfTweets:
         break
     tweets_list2.append([tweet.id, tweet.date, tweet.user.username, tweet.content.replace('\n','')])
 

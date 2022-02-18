@@ -6,3 +6,4 @@ snscrape/
 *.csv
 s.x
 .env
+bigbot.py

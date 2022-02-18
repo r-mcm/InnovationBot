@@ -14,7 +14,7 @@ cur = conn.cursor()
 # Create the table in SQL
 cur.execute("""
     CREATE TABLE accounts(
-    AcccountName text PRIMARY KEY,
+    AccountName text PRIMARY KEY,
     Region text,
     Portfolio text,
     SubPortfolio text,
